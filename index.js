@@ -1,6 +1,7 @@
 const csv = require('csvtojson')
 const { createObjectCsvWriter: createCsvWriter } = require('csv-writer')
 const { treadmillAlgorithm } = require('./treadmill.js')
+const mkdirp = require('mkdirp')
 
 const csvPath = './digit_span.csv'
 
@@ -112,19 +113,29 @@ function getBlockAverage(results) {
   return averages
 }
 
-csv()
-  .fromFile(csvPath)
-  .then((results) => {
-    Promise.all([
-      csvWriters.all.standard.writeRecords(analyseAllBlocks(results)),
-      csvWriters.all.average.writeRecords(getBlockAverage(analyseAllBlocks(results))),
-      
-      csvWriters.mono.standard.writeRecords(analyseAllBlocks(results, false)),
-      csvWriters.mono.average.writeRecords(getBlockAverage(analyseAllBlocks(results, false))),
+//First create a directory to insert the files
+mkdirp('./output', (err) => {
+  // If there's an error with the directory's existence, throw
+  if (err) {
+    console.error(err)
+    return
+  }
 
-      csvWriters.bi.standard.writeRecords(analyseAllBlocks(results, true)),
-      csvWriters.bi.average.writeRecords(getBlockAverage(analyseAllBlocks(results, true))),
-    ]).then(() => {
-      console.log("Complete")
+  // Else, create the files
+  csv()
+    .fromFile(csvPath)
+    .then((results) => {
+      Promise.all([
+        csvWriters.all.standard.writeRecords(analyseAllBlocks(results)),
+        csvWriters.all.average.writeRecords(getBlockAverage(analyseAllBlocks(results))),
+        
+        csvWriters.mono.standard.writeRecords(analyseAllBlocks(results, false)),
+        csvWriters.mono.average.writeRecords(getBlockAverage(analyseAllBlocks(results, false))),
+
+        csvWriters.bi.standard.writeRecords(analyseAllBlocks(results, true)),
+        csvWriters.bi.average.writeRecords(getBlockAverage(analyseAllBlocks(results, true))),
+      ]).then(() => {
+        console.log("Complete")
+      })
     })
-  })
+})
