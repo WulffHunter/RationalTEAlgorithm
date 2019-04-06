@@ -1,4 +1,4 @@
-# PREAlgorithm
+# RationalTEAlgorithm
 
 To install:
 
