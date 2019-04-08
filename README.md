@@ -11,5 +11,5 @@ To install:
 To run:
 
 1) go into the RationalTEAlgorithm folder
-2) type `node index.js`
+2) type `node index.js` (or, to pass in a filename `$FILENAME`, type `node index.js $FILENAME`)
 3) TA-DA!
