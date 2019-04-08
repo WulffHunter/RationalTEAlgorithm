@@ -3,7 +3,7 @@ const { createObjectCsvWriter: createCsvWriter } = require('csv-writer')
 const { treadmillAlgorithm } = require('./treadmill.js')
 const mkdirp = require('mkdirp')
 
-const csvPath = './digit_span.csv'
+const csvPath = process.argv[2] || './digit_span.csv'
 
 const headerStandard = [
   { id: 'key', title: 'KEY' },
